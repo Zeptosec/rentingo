@@ -1,8 +1,17 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
+First cd into directory you cloned:
 
-First, run the development server:
+```bash
+cd rentigo
+```
+Then install all dependencies:
+
+```bash
+npm install
+```
+Finally, run the development server:
 
 ```bash
 npm run dev
