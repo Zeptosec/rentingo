@@ -1,6 +1,31 @@
+import Post, { IPost } from '@/components/Post'
+import Posts from '@/components/Posts';
 import Head from 'next/head'
+import { useEffect, useState } from 'react'
 
 export default function Home() {
+  const [posts, setPosts] = useState<IPost[]>([])
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function getPosts() {
+      try {
+        const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/adverts`);
+        if (rs.ok) {
+          const json = await rs.json();
+          console.log(json);
+
+          setPosts(json);
+        }
+      } catch (rr) {
+        console.log(rr);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    getPosts();
+  }, [])
+
   return (
     <>
       <Head>
@@ -9,7 +34,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h2 className='text-indigo-500'>Rentingo text</h2>
+      {isLoading ? <div>Loading...</div> :
+        <div className='grid'>
+          {posts.length > 0 ? <Posts posts={posts} /> : <p>No posts</p>}
+        </div>}
     </>
   )
 }
