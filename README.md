@@ -1,7 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
-Make sure you have NodeJS installed at least version 16. Latest would be the best. 
+Make sure you have NodeJS installed at least version 16. Latest would be the best.<br>
 First cd into directory you cloned:
 
 ```bash
