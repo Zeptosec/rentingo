@@ -2,8 +2,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 Make sure you have NodeJS installed at least version 16. Latest would be the best.<br>
-First cd into directory you cloned:
-
+First cd into directory you cloned:<br>
+rename `.env.local.example` to `.env.local`
 ```bash
 cd rentigo
 ```
