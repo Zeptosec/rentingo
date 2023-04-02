@@ -25,8 +25,7 @@ export default function Navbar() {
 
                         {/* <!-- primary nav --> */}
                         <div className="hidden md:flex items-center space-x-1">
-                            <Link href="#" className="py-5 px-3 text-gray-700 hover:text-gray-900">Features</Link>
-                            <Link href="#" className="py-5 px-3 text-gray-700 hover:text-gray-900">Pricing</Link>
+                            <Link href="/newpost" className="py-5 px-3 text-gray-700 hover:text-gray-900">New</Link>
                         </div>
                     </div>
 

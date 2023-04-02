@@ -10,11 +10,11 @@ export default function Home() {
   useEffect(() => {
     async function getPosts() {
       try {
-        const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/adverts`);
+        const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts`);
         if (rs.ok) {
           const json = await rs.json();
           console.log(json);
-
+          
           setPosts(json);
         }
       } catch (rr) {

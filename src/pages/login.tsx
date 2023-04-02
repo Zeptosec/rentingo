@@ -1,4 +1,5 @@
 import { ValidateEmail } from "@/utils/utils";
+import Head from "next/head";
 import { FormEvent, useState } from "react"
 
 export default function Login() {
@@ -28,6 +29,12 @@ export default function Login() {
 
     return (
         <div className="h-full bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+            <Head>
+                <title>Login</title>
+                <meta name="description" content="Renting system" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <div className="relative py-3 sm:max-w-xl sm:mx-auto">
                 <div
                     className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
@@ -40,7 +47,7 @@ export default function Login() {
                         <div className="divide-y divide-gray-200">
                             <form onSubmit={w => signup(w)} className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                                 <div className="relative">
-                                    <input onChange={w => setEmail(curr => ({ ...curr, val: w.target.value }))} value={email.val} autoComplete="off" id="email" name="email" type="text" className={`peer placeholder-transparent h-10 w-full border-b-2 ${email.error ? 'border-red-500' : 'border-gray-300'} text-gray-900 focus:outline-none focus:borer-rose-600"`} placeholder="Email address" />
+                                    <input onChange={w => setEmail(curr => ({ ...curr, val: w.target.value }))} value={email.val} autoComplete="off" id="email" name="email" type="text" className={`peer placeholder-transparent h-10 w-full border-b-2 ${email.error ? 'border-red-500' : 'border-gray-300'} text-gray-900 focus:outline-none focus:borer-rose-600`} placeholder="Email address" />
                                     <label htmlFor="email" className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Email Address</label>
                                 </div>
                                 <div className="relative">
