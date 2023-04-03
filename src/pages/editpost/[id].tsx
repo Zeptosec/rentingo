@@ -11,7 +11,9 @@ export default function Post({ post }: Props) {
 
     async function onSubmit(newPost: IPost) {
         const id = newPost.id;
-        let obj: any = { ...newPost }
+        let startDate = new Date(new Date().getTime() + 1000 * 60 * 60 * 24)
+        let endDate = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10)
+        let obj: any = { ...newPost, rentStart: startDate, rentEnd: endDate }
         delete obj.id;
         await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts/${id}`, {
             method: "PUT",
@@ -45,8 +47,8 @@ export async function getStaticProps({ params }: any) {
         },
         // Next.js will attempt to re-generate the page:
         // - When a request comes in
-        // - At most once every 60 seconds
-        revalidate: 60, // In seconds
+        // - At most once every 10 seconds
+        revalidate: 10, // In seconds
     }
 }
 
