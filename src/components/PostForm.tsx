@@ -128,8 +128,8 @@ export default function PostForm({ onSubmit, post }: Props) {
             </div>
             {finished === 1 ? <p className="text-red-500">Error</p> : ""}
             {finished === 2 ? <p className="text-green-500">Success</p> : ""}
-            {emsg.length > 0 ? <div>{emsg.map(w => (
-                <p className="text-red-500">{w}</p>
+            {emsg.length > 0 ? <div>{emsg.map((w: string, ind: number) => (
+                <p key={`err-${ind}`} className="text-red-500">{w}</p>
             ))}</div> : ""}
         </form>
     )
