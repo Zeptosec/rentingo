@@ -4,3 +4,8 @@ export function ValidateEmail(mail: string) {
     }
     return false
 }
+
+export function DateToISO(date: Date){
+    const r = date.toISOString().split('.');
+    return r[0];
+}

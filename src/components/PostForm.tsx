@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react"
 import { IPost } from "./Post"
 import Image from "next/image"
 import Spinner from "./Spinner"
+import { DateToISO } from "@/utils/utils"
 
 interface Props {
     onSubmit: Function
@@ -115,11 +116,11 @@ export default function PostForm({ onSubmit, post }: Props) {
             </div>
             <div>
                 <p className="text-gray-600 text-base">Start date:</p>
-                <input type="datetime-local" className={`border rounded-lg p-1 ${errors.includes("date") ? "border-red-500" : "border-gray-400"}`} onChange={w => setTPost(curr => ({ ...curr, rentStart: new Date(w.target.value) }))} value={tpost.rentStart.toISOString().split('.')[0]} name="startd" id="startd" />
+                <input type="datetime-local" className={`border rounded-lg p-1 ${errors.includes("date") ? "border-red-500" : "border-gray-400"}`} onChange={w => setTPost(curr => ({ ...curr, rentStart: new Date(w.target.value) }))} value={DateToISO(tpost.rentStart)} name="startd" id="startd" />
             </div>
             <div>
                 <p className="text-gray-600 text-base">End date:</p>
-                <input type="datetime-local" className={`border rounded-lg p-1 ${errors.includes("date") ? "border-red-500" : "border-gray-400"}`} onChange={w => setTPost(curr => ({ ...curr, rentEnd: new Date(w.target.value) }))} value={tpost.rentEnd.toISOString().split('.')[0]} name="endd" id="endd" />
+                <input type="datetime-local" className={`border rounded-lg p-1 ${errors.includes("date") ? "border-red-500" : "border-gray-400"}`} onChange={w => setTPost(curr => ({ ...curr, rentEnd: new Date(w.target.value) }))} value={DateToISO(tpost.rentEnd)} name="endd" id="endd" />
             </div>
             <div className="relative">
                 {isLoading ?
