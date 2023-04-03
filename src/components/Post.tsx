@@ -13,7 +13,8 @@ export interface IPost {
 }
 
 interface Props {
-    post: IPost
+    post: IPost,
+    delPost: Function
 }
 
 function isValidUrl(string: string) {
@@ -25,7 +26,7 @@ function isValidUrl(string: string) {
     }
   }
 
-export default function Post({ post }: Props) {
+export default function Post({ post, delPost }: Props) {
 
     return (
 
@@ -39,8 +40,9 @@ export default function Post({ post }: Props) {
                 </Link>
                 <p className="text-gray-500">{post.description}</p>
             </div>
-            <div className="absolute right-2 top-2 hover:underline hover:text-blue-400">
-                <Link href={`/editpost/${post.id}`}>Edit</Link>
+            <div className="absolute right-2 top-2 grid justify-end text-end">
+                <Link className="hover:underline hover:text-blue-400" href={`/editpost/${post.id}`}>Edit</Link>
+                <button onClick={() => delPost(post)} className="hover:underline grid hover:text-blue-400">Delete</button>
             </div>
         </div>
     )

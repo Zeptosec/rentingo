@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react"
 import { IPost } from "./Post"
 import Image from "next/image"
+import Spinner from "./Spinner"
 
 interface Props {
     onSubmit: Function
@@ -15,6 +16,7 @@ export const deliveryTypes = [
 export default function PostForm({ onSubmit, post }: Props) {
     const [tpost, setTPost] = useState(post)
     const [errors, setErrors] = useState<string[]>([])
+    const [emsg, setEMsg] = useState<string[]>([])
     const [file, setFile] = useState<File>();
     const [isLoading, setIsLoading] = useState(false);
     const [finished, setFinished] = useState(0);
@@ -30,11 +32,23 @@ export default function PostForm({ onSubmit, post }: Props) {
         if (isLoading) return;
         setIsLoading(true);
         let errs = [];
+        setFinished(0);
+        setEMsg([]);
         if (tpost.title.length < 3) {
             errs.push("title");
+            setEMsg(w => [...w, "Missing title"]);
         }
         if (tpost.description.length === 0) {
+            setEMsg(w => [...w, "Missing description"]);
             errs.push("desc");
+        }
+        if (tpost.rentStart.getTime() + 24 * 60 * 60 * 1000 >= tpost.rentEnd.getTime()) {
+            setEMsg(w => [...w, "Start date must start earlier than end date"]);
+            errs.push("date");
+        }
+        if (tpost.rentEnd.getTime() < new Date().getTime() + 12 * 60 * 60 * 1000) {
+            setEMsg(w => [...w, "End date is too early"]);
+            errs.push("date");
         }
         setErrors(errs);
         if (errs.length > 0) {
@@ -85,7 +99,7 @@ export default function PostForm({ onSubmit, post }: Props) {
             </div>
             <div>
                 <p className="text-gray-600 text-base">Image file:</p>
-                <input type="file" name="file" id="file" onChange={handleFileChange} />
+                <input type="file" name="file" id="file" onChange={handleFileChange} accept="image/png, image/jpeg" />
                 {tpost.imageUrl ? <div className="mt-2">
                     <p className="text-gray-600 text-base">Current image</p>
                     <img width={400} src={tpost.imageUrl} />
@@ -99,11 +113,24 @@ export default function PostForm({ onSubmit, post }: Props) {
                     ))}
                 </select>
             </div>
+            <div>
+                <p className="text-gray-600 text-base">Start date:</p>
+                <input type="datetime-local" className={`border rounded-lg p-1 ${errors.includes("date") ? "border-red-500" : "border-gray-400"}`} onChange={w => setTPost(curr => ({ ...curr, rentStart: new Date(w.target.value) }))} value={tpost.rentStart.toISOString().split('.')[0]} name="startd" id="startd" />
+            </div>
+            <div>
+                <p className="text-gray-600 text-base">End date:</p>
+                <input type="datetime-local" className={`border rounded-lg p-1 ${errors.includes("date") ? "border-red-500" : "border-gray-400"}`} onChange={w => setTPost(curr => ({ ...curr, rentEnd: new Date(w.target.value) }))} value={tpost.rentEnd.toISOString().split('.')[0]} name="endd" id="endd" />
+            </div>
             <div className="relative">
-                <button className="bg-blue-500 text-white rounded-md px-2 py-1">Submit</button>
+                {isLoading ?
+                    <Spinner /> :
+                    <button className="bg-blue-500 text-white rounded-md px-2 py-1">Submit</button>}
             </div>
             {finished === 1 ? <p className="text-red-500">Error</p> : ""}
             {finished === 2 ? <p className="text-green-500">Success</p> : ""}
+            {emsg.length > 0 ? <div>{emsg.map(w => (
+                <p className="text-red-500">{w}</p>
+            ))}</div> : ""}
         </form>
     )
 }

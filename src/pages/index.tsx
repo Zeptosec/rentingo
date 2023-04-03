@@ -13,7 +13,6 @@ export default function Home() {
         const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts`);
         if (rs.ok) {
           const json = await rs.json();
-          console.log(json);
           
           setPosts(json);
         }
@@ -36,7 +35,7 @@ export default function Home() {
       </Head>
       {isLoading ? <div>Loading...</div> :
         <div className='grid'>
-          {posts.length > 0 ? <Posts posts={posts} /> : <p>No posts</p>}
+          {posts.length > 0 ? <Posts posts={posts} setPosts={setPosts} /> : <p>No posts</p>}
         </div>}
     </>
   )
