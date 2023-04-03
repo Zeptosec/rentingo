@@ -7,6 +7,14 @@ export function ValidateEmail(mail: string) {
 
 export function DateToISO(date: Date) {
     let dt = null;
+    if (typeof date === "string") {
+        try {
+            date = new Date(date);
+        } catch (err) {
+            console.log("failed to convert string to date")
+            console.log(err);
+        }
+    }
     if (typeof date === 'object' && date !== null && 'toISOString' in date) {
         dt = date;
     } else dt = new Date();
