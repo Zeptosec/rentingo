@@ -1,5 +1,6 @@
 import { IPost } from "@/components/Post";
 import PostForm from "@/components/PostForm";
+import Head from "next/head";
 import { useState } from "react";
 
 export default function NewPost() {
@@ -27,6 +28,12 @@ export default function NewPost() {
 
     return (
         <div className="mx-auto w-1/2 mt-2">
+            <Head>
+                <title>New post</title>
+                <meta name="description" content="Renting system" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <PostForm onSubmit={CreatePost} post={post} />
         </div>
     )

@@ -1,7 +1,8 @@
 import { ValidateEmail } from "@/utils/utils";
+import Head from "next/head";
 import { FormEvent, useState } from "react"
 
-export default function Signup () {
+export default function Signup() {
 
     const [email, setEmail] = useState({ error: false, val: "" });
     const [password, setPassword] = useState({ error: false, val: "" });
@@ -34,6 +35,12 @@ export default function Signup () {
 
     return (
         <div className="h-full bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+            <Head>
+                <title>Signup</title>
+                <meta name="description" content="Renting system" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <div className="relative py-3 sm:max-w-xl sm:mx-auto">
                 <div
                     className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
