@@ -5,7 +5,11 @@ export function ValidateEmail(mail: string) {
     return false
 }
 
-export function DateToISO(date: Date){
-    const r = date.toISOString().split('.');
+export function DateToISO(date: Date) {
+    let dt = null;
+    if (typeof date === 'object' && date !== null && 'toISOString' in date) {
+        dt = date;
+    } else dt = new Date();
+    const r = dt.toISOString().split('.');
     return r[0];
 }
