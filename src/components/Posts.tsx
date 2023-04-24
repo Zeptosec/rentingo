@@ -1,16 +1,20 @@
+import { LoadingState, User } from "@/context/user";
 import Post, { IPost } from "./Post";
 
 interface Props {
-    posts: IPost[]
-    setPosts: Function
+    posts: IPost[],
+    setPosts: Function,
+    user?: User | null,
+    loadingState?: LoadingState
 }
 
-export default function Posts({ posts, setPosts }: Props) {
+export default function Posts({ posts, setPosts, user, loadingState }: Props) {
 
     async function delPost(post: IPost) {
-        if (confirm(`Are you sure you want to delete ${post.title}?`)) {
+        if (loadingState === 'loading' || loadingState === 'loggedout' || !user) return;
+        if (confirm(`Ar tikrai norite ištrinti ${post.title}?`)) {
             try {
-                await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts?id=${post.id}`, { method: "DELETE" })
+                await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts?id=${post.id}`, { method: "DELETE", headers: { 'Authorization': `Bearer ${user.token}` } })
                 setPosts((curr: IPost[]) => [...curr.filter((a: IPost) => a.id !== post.id)])
             } catch (err: any) {
                 console.log(err);
@@ -21,7 +25,7 @@ export default function Posts({ posts, setPosts }: Props) {
 
     return (
         <div className="max-w-4xl w-full m-auto px-2 grid">
-            {posts.map((post, ind) => <Post key={ind} post={post} delPost={delPost} />)}
+            {posts.map((post, ind) => <Post user={user} loadingState={loadingState} key={ind} post={post} delPost={delPost} />)}
         </div>
     )
 }

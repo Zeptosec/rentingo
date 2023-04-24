@@ -1,8 +1,15 @@
 import Link from "next/link";
 import Image from 'next/image';
+import { useUser } from "@/context/user";
+import { useRouter } from "next/router";
 
 export default function Navbar() {
-
+    const { loadingState, user, setUser } = useUser();
+    const router= useRouter();
+    function logout() {
+        setUser(null);
+        router.push('/login');
+    }
     return (
         <nav className="bg-gray-100">
             <div className="max-w-6xl mx-auto px-4">
@@ -25,14 +32,20 @@ export default function Navbar() {
 
                         {/* <!-- primary nav --> */}
                         <div className="hidden md:flex items-center space-x-1">
-                            <Link href="/newpost" className="py-5 px-3 text-gray-700 hover:text-gray-900">New</Link>
+                            {loadingState === 'loggedin' ? <Link href="/newpost" className="py-5 px-3 text-gray-700 hover:text-gray-900">Naujas</Link> : ''}
                         </div>
                     </div>
 
                     {/* <!-- secondary nav --> */}
                     <div className="hidden md:flex items-center space-x-1">
-                        <Link href="/login" className="py-5 px-3">Login</Link>
-                        <Link href="/signup" className="py-2 px-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 hover:text-yellow-800 rounded transition duration-300">Signup</Link>
+                        {loadingState === 'loggedin' ?
+                            <button onClick={() => logout()} className="py-2 px-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 hover:text-yellow-800 rounded transition duration-300">
+                                Atsijungti
+                            </button> :
+                            <>
+                                <Link href="/login" className="py-5 px-3">Prisijungti</Link>
+                                <Link href="/signup" className="py-2 px-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 hover:text-yellow-800 rounded transition duration-300">Registruotis</Link>
+                            </>}
                     </div>
 
                     {/* <!-- mobile button goes here --> */}
@@ -47,10 +60,10 @@ export default function Navbar() {
                 </div>
             </div>
 
-            <div className="mobile-menu hidden md:hidden">
+            {/* <div className="mobile-menu hidden md:hidden">
                 <Link href="#" className="block py-2 px-4 text-sm hover:bg-gray-200">Features</Link>
                 <Link href="#" className="block py-2 px-4 text-sm hover:bg-gray-200">Pricing</Link>
-            </div>
+            </div> */}
         </nav>
 
     )

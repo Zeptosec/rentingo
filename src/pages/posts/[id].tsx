@@ -8,20 +8,16 @@ interface Props {
 }
 
 export default function Post({ post }: Props) {
-    
+
     return (
         <>
             <Head>
                 <title>{post.title}</title>
-            </Head>                  
+            </Head>
             <div className="max-w-4xl w-full m-auto mt-2 gap-2 px-2 flex">
-                <Link href={`/`}>
-                    <img width={500} height={500} alt="advert logo" src={post.imageUrl ? post.imageUrl : `https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg`} />
-                </Link>
+                <img width={500} height={500} alt="advert logo" src={post.imageUrl ? post.imageUrl : `https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg`} />
                 <div>
-                    <Link href={`/`}>
-                        <h3 className="text-xl font-semibold text-green-600 hover:underline">{post.title}</h3>
-                    </Link>
+                    <h3 className="text-xl font-semibold text-green-600">{post.title}</h3>
                     <p className="text-gray-500">{post.description}</p>
                     <p className="text-gray-500">{deliveryTypes[post.deliveryType]}</p>
                 </div>

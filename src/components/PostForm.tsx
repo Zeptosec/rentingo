@@ -43,11 +43,11 @@ export default function PostForm({ onSubmit, post }: Props) {
             setEMsg(w => [...w, "Missing description"]);
             errs.push("desc");
         }
-        if (tpost.rentStart.getTime() + 24 * 60 * 60 * 1000 >= tpost.rentEnd.getTime()) {
+        if (new Date(tpost.rentStart).getTime() + 24 * 60 * 60 * 1000 >= new Date(tpost.rentEnd).getTime()) {
             setEMsg(w => [...w, "Start date must start earlier than end date"]);
             errs.push("date");
         }
-        if (tpost.rentEnd.getTime() < new Date().getTime() + 12 * 60 * 60 * 1000) {
+        if (new Date(tpost.rentEnd).getTime() < new Date().getTime() + 12 * 60 * 60 * 1000) {
             setEMsg(w => [...w, "End date is too early"]);
             errs.push("date");
         }
@@ -91,15 +91,15 @@ export default function PostForm({ onSubmit, post }: Props) {
     return (
         <form onSubmit={w => check(w)} className="py-8 text-base leading-6 grid gap-2 text-gray-700 sm:text-lg sm:leading-7">
             <div className="relative">
-                <input onChange={w => setTPost(curr => ({ ...curr, title: w.target.value }))} value={tpost.title} autoComplete="off" id="title" name="title" type="text" className={`peer placeholder-transparent h-10 w-full border-b-2 ${errors.includes("title") ? 'border-red-500' : 'border-gray-300'} text-gray-900 focus:outline-none focus:borer-rose-600`} placeholder="Title" />
-                <label htmlFor="title" className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Title</label>
+                <input onChange={w => setTPost(curr => ({ ...curr, title: w.target.value }))} value={tpost.title} autoComplete="off" id="title" name="title" type="text" className={`peer placeholder-transparent h-10 w-full border-b-2 ${errors.includes("title") ? 'border-red-500' : 'border-gray-300'} text-gray-900 focus:outline-none focus:borer-rose-600`} placeholder="Pavadinimas" />
+                <label htmlFor="title" className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Pavadinimas</label>
             </div>
             <div className="relative">
-                <p className="text-gray-600 text-base">Description</p>
+                <p className="text-gray-600 text-base">Apibendrinimas</p>
                 <textarea onChange={w => setTPost(curr => ({ ...curr, description: w.target.value }))} value={tpost.description} name="desc" id="desc" cols={30} rows={10} placeholder="Description" className={`peer placeholder-transparent h-10 w-full border rounded-lg p-1 ${errors.includes("desc") ? 'border-red-500' : 'border-gray-300'} text-gray-900 focus:outline-none focus:borer-rose-600`}></textarea>
             </div>
             <div>
-                <p className="text-gray-600 text-base">Image file:</p>
+                <p className="text-gray-600 text-base">Nuotrauka:</p>
                 <input type="file" name="file" id="file" onChange={handleFileChange} accept="image/png, image/jpeg" />
                 {tpost.imageUrl ? <div className="mt-2">
                     <p className="text-gray-600 text-base">Current image</p>
@@ -107,7 +107,7 @@ export default function PostForm({ onSubmit, post }: Props) {
                 </div> : ""}
             </div>
             <div>
-                <p className="text-gray-600 text-base">Delivery type:</p>
+                <p className="text-gray-600 text-base">Pristatymo tipas:</p>
                 <select onChange={w => setTPost(curr => ({ ...curr, deliveryType: parseInt(w.target.value) }))} className="w-1/2" name="delivery" id="delivery">
                     {deliveryTypes.map((w, ind) => (
                         <option key={ind} value={ind}>{w}</option>
@@ -115,20 +115,20 @@ export default function PostForm({ onSubmit, post }: Props) {
                 </select>
             </div>
             <div>
-                <p className="text-gray-600 text-base">Start date:</p>
+                <p className="text-gray-600 text-base">Pradžios data:</p>
                 <input type="datetime-local" className={`border rounded-lg p-1 ${errors.includes("date") ? "border-red-500" : "border-gray-400"}`} onChange={w => setTPost(curr => ({ ...curr, rentStart: new Date(w.target.value) }))} value={DateToISO(tpost.rentStart)} name="startd" id="startd" />
             </div>
             <div>
-                <p className="text-gray-600 text-base">End date:</p>
+                <p className="text-gray-600 text-base">Pabaigos data:</p>
                 <input type="datetime-local" className={`border rounded-lg p-1 ${errors.includes("date") ? "border-red-500" : "border-gray-400"}`} onChange={w => setTPost(curr => ({ ...curr, rentEnd: new Date(w.target.value) }))} value={DateToISO(tpost.rentEnd)} name="endd" id="endd" />
             </div>
             <div className="relative">
                 {isLoading ?
                     <Spinner /> :
-                    <button className="bg-blue-500 text-white rounded-md px-2 py-1">Submit</button>}
+                    <button className="bg-blue-500 text-white rounded-md px-2 py-1">Pateikti</button>}
             </div>
-            {finished === 1 ? <p className="text-red-500">Error</p> : ""}
-            {finished === 2 ? <p className="text-green-500">Success</p> : ""}
+            {finished === 1 ? <p className="text-red-500">Nepavyko</p> : ""}
+            {finished === 2 ? <p className="text-green-500">Pavyko</p> : ""}
             {emsg.length > 0 ? <div>{emsg.map((w: string, ind: number) => (
                 <p key={`err-${ind}`} className="text-red-500">{w}</p>
             ))}</div> : ""}

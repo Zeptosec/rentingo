@@ -1,9 +1,18 @@
 import { IPost } from "@/components/Post";
 import PostForm from "@/components/PostForm";
+import { useUser } from "@/context/user";
 import Head from "next/head";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function NewPost() {
+    const { loadingState, user } = useUser();
+    const router = useRouter();
+    useEffect(() => {
+        if (loadingState === 'loading') return;
+        if (loadingState === 'loggedout') router.push("/login");
+    }, [loadingState]);
+    if (loadingState === 'loading' || loadingState === 'loggedout') return <p>Loading...</p>
     const [post, setPost] = useState<IPost>({
         description: "",
         videoUrl: "",
@@ -20,7 +29,8 @@ export default function NewPost() {
         await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts`, {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user?.token}`
             },
             body: JSON.stringify(obj)
         })
@@ -29,7 +39,7 @@ export default function NewPost() {
     return (
         <div className="mx-auto w-1/2 mt-2">
             <Head>
-                <title>New post</title>
+                <title>Naujas skelbimas</title>
                 <meta name="description" content="Renting system" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />

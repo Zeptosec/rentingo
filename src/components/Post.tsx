@@ -1,3 +1,4 @@
+import { LoadingState, User } from "@/context/user";
 import Image from "next/image"
 import Link from "next/link"
 
@@ -14,19 +15,21 @@ export interface IPost {
 
 interface Props {
     post: IPost,
-    delPost: Function
+    delPost: Function,
+    loadingState?: LoadingState,
+    user?: User | null
 }
 
 function isValidUrl(string: string) {
     try {
-      new URL(string);
-      return true;
+        new URL(string);
+        return true;
     } catch (err) {
-      return false;
+        return false;
     }
-  }
+}
 
-export default function Post({ post, delPost }: Props) {
+export default function Post({ post, delPost, loadingState, user }: Props) {
 
     return (
 
@@ -41,8 +44,8 @@ export default function Post({ post, delPost }: Props) {
                 <p className="text-gray-500">{post.description}</p>
             </div>
             <div className="absolute right-2 top-2 grid justify-end text-end">
-                <Link className="hover:underline hover:text-blue-400" href={`/editpost/${post.id}`}>Edit</Link>
-                <button onClick={() => delPost(post)} className="hover:underline grid hover:text-blue-400">Delete</button>
+                {loadingState === 'loggedin' ? <Link className="hover:underline hover:text-blue-400" href={`/editpost/${post.id}`}>Keisti</Link> : ''}
+                {loadingState === 'loggedin' ? <button onClick={() => delPost(post)} className="hover:underline grid hover:text-blue-400">Trinti</button> : ''}
             </div>
         </div>
     )
