@@ -12,7 +12,6 @@ export default function NewPost() {
         if (loadingState === 'loading') return;
         if (loadingState === 'loggedout') router.push("/login");
     }, [loadingState]);
-    if (loadingState === 'loading' || loadingState === 'loggedout') return <p>Loading...</p>
     const [post, setPost] = useState<IPost>({
         description: "",
         videoUrl: "",
@@ -44,7 +43,8 @@ export default function NewPost() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <PostForm onSubmit={CreatePost} post={post} />
+            {loadingState === 'loggedin' ?
+                <PostForm onSubmit={CreatePost} post={post} /> : <p>Kraunama...</p>}
         </div>
     )
 }
