@@ -35,16 +35,17 @@ export default function Login() {
                         'accept': '*/*'
                     },
                     body: JSON.stringify({ email: email.val, password: password.val })
-                })
+                });
                 const json = await rs.json();
                 if (rs.ok) {
                     setUser({ token: json.accessToken })
                     router.push('/');
                 } else {
-                    setSucc({ val: 2, msg: "Failed to login" });
+                    setSucc({ val: 2, msg: "Nepavyko prisijungti" });
                 }
             } catch (rr) {
                 console.log(rr);
+                setSucc({ val: 2, msg: "Nepavyko prisijungti" });
             }
         }
     }
@@ -80,8 +81,8 @@ export default function Login() {
                                     <button className="bg-blue-500 text-white rounded-md px-2 py-1">Prisijungti</button>
                                 </div>
                             </form>
-                            {succ.val === 2 ? <p className="text-red-600">{succ.msg}</p> : ""}
                         </div>
+                        {succ.val === 2 ? <p className="text-red-600">{succ.msg}</p> : ""}
                     </div>
                 </div>
             </div>

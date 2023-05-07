@@ -1,5 +1,6 @@
 import { IPost } from "@/components/Post";
 import PostForm from "@/components/PostForm";
+import Spinner from "@/components/Spinner";
 import { useUser } from "@/context/user";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -25,7 +26,7 @@ export default function NewPost() {
     async function CreatePost(newPost: IPost) {
         let obj: any = { ...newPost };
         delete obj.id;
-        await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts`, {
+        const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -33,6 +34,10 @@ export default function NewPost() {
             },
             body: JSON.stringify(obj)
         })
+        if (rs.ok) {
+            return { msg: "Pavyko", success: true };
+        }
+        return { msg: "Nepavyko", success: false };
     }
 
     return (
@@ -44,7 +49,7 @@ export default function NewPost() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             {loadingState === 'loggedin' ?
-                <PostForm onSubmit={CreatePost} post={post} /> : <p>Kraunama...</p>}
+                <PostForm onSubmit={CreatePost} post={post} /> : <div className="flex justify-center"><Spinner /></div>}
         </div>
     )
 }

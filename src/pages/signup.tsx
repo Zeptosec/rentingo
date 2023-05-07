@@ -43,7 +43,12 @@ export default function Signup() {
                     setSucc({ val: 1, msg: "Sekmingai prisiregistruota!" });
                     router.push('/login');
                 } else {
-                    setSucc({val: 2, msg: "Nepavyko prisiregistruoti"});
+                    const json = await rs.json();
+                    let msg = "Nepavyko prisiregistruoti";
+                    if(json.message && json.message.includes("exists")){
+                        msg = "Toks el. paštas jau egzistuoja";
+                    }
+                    setSucc({ val: 2, msg });
                 }
             } catch (rr) {
                 console.log(rr);
@@ -86,9 +91,9 @@ export default function Signup() {
                                     <button className="bg-blue-500 text-white rounded-md px-2 py-1">Registruotis</button>
                                 </div>
                             </form>
-                            {succ.val === 1 ? <p className="text-green-600">{succ.msg}</p> : ""}
-                            {succ.val === 2 ? <p className="text-red-600">{succ.msg}</p> : ""}
                         </div>
+                        {succ.val === 1 ? <p className="text-green-600">{succ.msg}</p> : ""}
+                        {succ.val === 2 ? <p className="text-red-600">{succ.msg}</p> : ""}
                     </div>
                 </div>
             </div>

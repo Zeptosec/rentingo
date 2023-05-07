@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import PostForm from "@/components/PostForm";
 import { useUser } from "@/context/user";
 import { useRouter } from "next/router";
+import Spinner from "@/components/Spinner";
 interface Props {
     post: IPost
 }
@@ -37,7 +38,7 @@ export default function Post() {
         let endDate = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10)
         let obj: any = { ...newPost, rentStart: startDate, rentEnd: endDate }
         delete obj.id;
-        await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts/${id}`, {
+        const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts/${id}`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
@@ -45,6 +46,10 @@ export default function Post() {
             },
             body: JSON.stringify(obj)
         })
+        if (rs.ok) {
+            return { success: true, msg: 'Sėkmingai išsaugota' };
+        }
+        return { success: false, msg: 'Nepavyko išsaugoti' };
     }
 
     return (
@@ -52,7 +57,7 @@ export default function Post() {
             <Head>
                 <title>{post ? post.title : 'Kraunama'}</title>
             </Head>
-            {post ? <PostForm onSubmit={onSubmit} post={post} /> : <p>Kraunama...</p>}
+            {post ? <PostForm onSubmit={onSubmit} post={post} /> : <div className="flex justify-center"><Spinner /></div>}
         </div>
     )
 }

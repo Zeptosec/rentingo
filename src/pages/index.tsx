@@ -1,5 +1,6 @@
 import Post, { IPost } from '@/components/Post'
 import Posts from '@/components/Posts';
+import Spinner from '@/components/Spinner';
 import { useUser } from '@/context/user';
 import Head from 'next/head'
 import { useRouter } from 'next/router';
@@ -35,7 +36,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {isLoading ? <div>Kraunama...</div> :
+      {isLoading ? <div className='flex justify-center mt-2'>
+        <Spinner />
+      </div> :
         <div className='grid'>
           {posts.length > 0 ? <Posts loadingState={loadingState} user={user} posts={posts} setPosts={setPosts} /> : <p>No posts</p>}
         </div>}

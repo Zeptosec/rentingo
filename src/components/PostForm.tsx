@@ -5,7 +5,7 @@ import Spinner from "./Spinner"
 import { DateToISO } from "@/utils/utils"
 
 interface Props {
-    onSubmit: Function
+    onSubmit(newPost: IPost): Promise<{msg: string, success: boolean}>,
     post: IPost
 }
 
@@ -79,8 +79,13 @@ export default function PostForm({ onSubmit, post }: Props) {
             }
         }
         try {
-            await onSubmit({ ...tpost, imageUrl: fid });
-            setFinished(2);
+            const res = await onSubmit({ ...tpost, imageUrl: fid });
+            if(res.success){
+                setFinished(2);
+            } else{
+                setFinished(1);
+            }
+            console.log(res.msg);
         } catch (err) {
             console.log(err);
             setFinished(1);
@@ -102,7 +107,7 @@ export default function PostForm({ onSubmit, post }: Props) {
                 <p className="text-gray-600 text-base">Nuotrauka:</p>
                 <input type="file" name="file" id="file" onChange={handleFileChange} accept="image/png, image/jpeg" />
                 {tpost.imageUrl ? <div className="mt-2">
-                    <p className="text-gray-600 text-base">Current image</p>
+                    <p className="text-gray-600 text-base">Dabartinė nuotrauka</p>
                     <img width={400} src={tpost.imageUrl} />
                 </div> : ""}
             </div>

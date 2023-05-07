@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 export default function Navbar() {
     const { loadingState, user, setUser } = useUser();
-    const router= useRouter();
+    const router = useRouter();
     function logout() {
         setUser(null);
         router.push('/login');
@@ -32,7 +32,10 @@ export default function Navbar() {
 
                         {/* <!-- primary nav --> */}
                         <div className="hidden md:flex items-center space-x-1">
-                            {loadingState === 'loggedin' ? <Link href="/newpost" className="py-5 px-3 text-gray-700 hover:text-gray-900">Naujas</Link> : ''}
+                            {loadingState === 'loggedin' ? <>
+                                <Link href="/profile" className="py-5 px-3 text-gray-700 hover:text-gray-900">Profilis</Link>
+                                <Link href="/newpost" className="py-5 px-3 text-gray-700 hover:text-gray-900">Naujas</Link>
+                            </> : ''}
                         </div>
                     </div>
 
@@ -59,11 +62,6 @@ export default function Navbar() {
 
                 </div>
             </div>
-
-            {/* <div className="mobile-menu hidden md:hidden">
-                <Link href="#" className="block py-2 px-4 text-sm hover:bg-gray-200">Features</Link>
-                <Link href="#" className="block py-2 px-4 text-sm hover:bg-gray-200">Pricing</Link>
-            </div> */}
         </nav>
 
     )
