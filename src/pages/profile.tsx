@@ -4,9 +4,9 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FormEvent, useEffect, useState } from 'react';
 
-type Role = 'nuomotojas' | 'nuomininkas' | 'administratorius';
+export type Role = 'nuomotojas' | 'nuomininkas' | 'administratorius';
 
-interface Profile {
+export interface Profile {
     role: Role,
     name: string,
     surname: string,

@@ -7,21 +7,25 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function NewPost() {
+    const [post, setPost] = useState<IPost>();
     const { loadingState, user } = useUser();
     const router = useRouter();
     useEffect(() => {
         if (loadingState === 'loading') return;
-        if (loadingState === 'loggedout') router.push("/login");
+        if (loadingState === 'loggedout' || !user) router.push("/login");
+        else {
+            setPost({
+                description: "",
+                videoUrl: "",
+                deliveryType: 1,
+                rentStart: new Date(),
+                rentEnd: new Date(new Date().getTime() + Math.round(1000 * 60 * 60 * 24 * 10 * (Math.random() / 2 + 0.5))),
+                id: 0,
+                title: "",
+                user: user.profile
+            })
+        }
     }, [loadingState]);
-    const [post, setPost] = useState<IPost>({
-        description: "",
-        videoUrl: "",
-        deliveryType: 1,
-        rentStart: new Date(),
-        rentEnd: new Date(new Date().getTime() + Math.round(1000 * 60 * 60 * 24 * 10 * (Math.random() / 2 + 0.5))),
-        id: 0,
-        title: ""
-    });
 
     async function CreatePost(newPost: IPost) {
         let obj: any = { ...newPost };
@@ -48,7 +52,7 @@ export default function NewPost() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            {loadingState === 'loggedin' ?
+            {loadingState === 'loggedin' && post ?
                 <PostForm onSubmit={CreatePost} post={post} /> : <div className="flex justify-center"><Spinner /></div>}
         </div>
     )

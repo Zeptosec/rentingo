@@ -1,3 +1,4 @@
+import { Profile } from "@/pages/profile";
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from "react";
 
 export type LoadingState = 'loading' | 'loggedin' | 'loggedout';
@@ -5,6 +6,7 @@ export type LoadingState = 'loading' | 'loggedin' | 'loggedout';
 export interface User {
     token: string,
     exp?: number,
+    profile: Profile
 }
 
 export interface Exposed {

@@ -38,7 +38,13 @@ export default function Login() {
                 });
                 const json = await rs.json();
                 if (rs.ok) {
-                    setUser({ token: json.accessToken })
+                    const rs2 = await fetch(`${process.env.NEXT_PUBLIC_API}/api/auth/currentUser`, {
+                        headers: {
+                            'Authorization': `Bearer ${json.accessToken}`
+                        }
+                    })
+                    const user = await rs2.json();
+                    setUser({ token: json.accessToken, profile: user })
                     router.push('/');
                 } else {
                     setSucc({ val: 2, msg: "Nepavyko prisijungti" });

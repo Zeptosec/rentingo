@@ -40,7 +40,7 @@ export default function Home() {
         <Spinner />
       </div> :
         <div className='grid'>
-          {posts.length > 0 ? <Posts loadingState={loadingState} user={user} posts={posts} setPosts={setPosts} /> : <p>No posts</p>}
+          {posts.length > 0 ? <Posts loadingState={loadingState} user={user} posts={posts} setPosts={setPosts} /> : <p>Skelbimų nėra</p>}
         </div>}
     </>
   )
