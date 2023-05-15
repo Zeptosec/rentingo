@@ -11,6 +11,7 @@ export default function Navbar() {
         setUser(null);
         router.push('/login');
     }
+    console.log(getRole(user))
     return (
         <nav className="bg-gray-100">
             <div className="max-w-6xl mx-auto px-4">
@@ -35,7 +36,7 @@ export default function Navbar() {
                         <div className="hidden md:flex items-center space-x-1">
                             {loadingState === 'loggedin' ? <>
                                 <Link href="/profile" className="py-5 px-3 text-gray-700 hover:text-gray-900">Profilis</Link>
-                                {getRole(user) === 'nuomotojas' ? <Link href="/newpost" className="py-5 px-3 text-gray-700 hover:text-gray-900">Naujas</Link> : ""}
+                                {getRole(user) === 'administratorius' ? <Link href="/newpost" className="py-5 px-3 text-gray-700 hover:text-gray-900">Naujas</Link> : ""}
                                 {getRole(user) === 'nuomininkas' ? <Link href="/reservations" className="py-5 px-3 text-gray-700 hover:text-gray-900">Rezervacijos</Link> : ""}
                             </> : ''}
                         </div>

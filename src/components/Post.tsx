@@ -1,5 +1,5 @@
 import { LoadingState, User } from "@/context/user";
-import { Profile } from "@/pages/profile";
+import { Profile, getRole } from "@/pages/profile";
 import Link from "next/link"
 
 export const Categories = ['Bagažinės', "Įrankiai", "Valtys"];
@@ -29,7 +29,7 @@ interface Props {
     post: IPost,
     delPost: Function,
     loadingState?: LoadingState,
-    user?: User | null
+    user: User | null
 }
 
 function isValidUrl(string: string) {
@@ -42,7 +42,6 @@ function isValidUrl(string: string) {
 }
 
 export default function Post({ post, delPost, loadingState, user }: Props) {
-
     return (
 
         <div className="relative w-full flex gap-2 py-2 border-t border-b border-indigo-200 hover:bg-gray-100 bg-white transition-colors overflow-hidden">
@@ -56,7 +55,7 @@ export default function Post({ post, delPost, loadingState, user }: Props) {
                 <p className="text-gray-500">{post.description}</p>
             </div>
             <div className="absolute right-2 top-2 grid justify-end text-end">
-                {loadingState === 'loggedin' && user?.profile.id === post.user.id ? <>
+                {loadingState === 'loggedin' && (user?.profile.id === post.user.id) ? <>
                     <Link className="hover:underline hover:text-blue-400" href={`/editpost/${post.id}`}>Keisti</Link>
                     <button onClick={() => delPost(post)} className="hover:underline grid hover:text-blue-400">Trinti</button>
                 </> : ''}

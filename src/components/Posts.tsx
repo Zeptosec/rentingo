@@ -4,7 +4,7 @@ import Post, { IPost } from "./Post";
 interface Props {
     posts: IPost[],
     setPosts: Function,
-    user?: User | null,
+    user: User | null,
     loadingState?: LoadingState
 }
 
