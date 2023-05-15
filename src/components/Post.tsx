@@ -2,6 +2,16 @@ import { LoadingState, User } from "@/context/user";
 import { Profile } from "@/pages/profile";
 import Link from "next/link"
 
+export const Categories = ['Bagažinės', "Įrankiai", "Valtys"];
+export interface Item {
+    id?: number,
+    category: number,
+    name: string,
+    price: string,
+    state: number,
+    user?: Profile
+}
+
 export interface IPost {
     description: string,
     imageUrl?: string,
@@ -9,9 +19,10 @@ export interface IPost {
     deliveryType: number,
     rentStart: Date,
     rentEnd: Date,
-    id: Number,
+    id: number,
     title: string,
-    user: Profile
+    user: Profile,
+    items: Item[]
 }
 
 interface Props {

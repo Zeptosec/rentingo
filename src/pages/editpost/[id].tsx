@@ -6,9 +6,7 @@ import PostForm from "@/components/PostForm";
 import { useUser } from "@/context/user";
 import { useRouter } from "next/router";
 import Spinner from "@/components/Spinner";
-interface Props {
-    post: IPost
-}
+import { editPost, fetchPost } from "@/controllers/PostController";
 
 export default function Post() {
     const [post, setPost] = useState<IPost>()
@@ -16,48 +14,25 @@ export default function Post() {
     const router = useRouter();
     const { id } = router.query;
     useEffect(() => {
-        async function fetchPost() {
-            if (id) {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts/${id}`);
-                const post = await res.json();
-                post.deliveryType = post.deliveryType === 'PickUp' ? 0 : 1;
+        async function fetchPostFunc() {
+            if(id){
+                const post = await fetchPost(id as string)
                 setPost(post);
             }
         }
-        console.log(loadingState)
         if (loadingState === 'loading') return;
         if (loadingState === 'loggedout') router.push('/login');
         else {
-            fetchPost();
+            fetchPostFunc();
         }
     }, [loadingState, id])
-
-    async function onSubmit(newPost: IPost) {
-        const id = newPost.id;
-        let startDate = new Date(new Date().getTime() + 1000 * 60 * 60 * 24)
-        let endDate = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10)
-        let obj: any = { ...newPost, rentStart: startDate, rentEnd: endDate }
-        delete obj.id;
-        const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts/${id}`, {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user?.token}`
-            },
-            body: JSON.stringify(obj)
-        })
-        if (rs.ok) {
-            return { success: true, msg: 'Sėkmingai išsaugota' };
-        }
-        return { success: false, msg: 'Nepavyko išsaugoti' };
-    }
 
     return (
         <div className="mx-auto w-1/2 mt-2">
             <Head>
                 <title>{post ? post.title : 'Kraunama'}</title>
             </Head>
-            {post ? <PostForm onSubmit={onSubmit} post={post} /> : <div className="flex justify-center"><Spinner /></div>}
+            {post ? <PostForm onSubmit={w => editPost(w, user)} post={post} /> : <div className="flex justify-center"><Spinner /></div>}
         </div>
     )
 }

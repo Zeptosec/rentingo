@@ -1,10 +1,21 @@
 import Spinner from '@/components/Spinner';
-import { useUser } from '@/context/user';
+import { User, useUser } from '@/context/user';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FormEvent, useEffect, useState } from 'react';
 
 export type Role = 'nuomotojas' | 'nuomininkas' | 'administratorius';
+
+export function getRole(user: User | null) : Role{
+    const rl: any = user?.profile.role;
+    if(rl === 0 || rl==="Owner"){
+        return "administratorius";
+    } else if(rl === 2 || rl === "Renter") {
+        return "nuomininkas";
+    } else {
+        return "nuomotojas";
+    }
+}
 
 export interface Profile {
     role: Role,
@@ -88,8 +99,8 @@ export default function Profile() {
         }
 
         try {
-            const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/api/auth/currentUser`, {
-                method: "POST",
+            const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/api/users`, {
+                method: "PUT",
                 headers: {
                     'Authorization': `Bearer ${user?.token}`,
                     'Content-Type': 'application/json'

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from 'next/image';
 import { useUser } from "@/context/user";
 import { useRouter } from "next/router";
+import { getRole } from "@/pages/profile";
 
 export default function Navbar() {
     const { loadingState, user, setUser } = useUser();
@@ -34,7 +35,8 @@ export default function Navbar() {
                         <div className="hidden md:flex items-center space-x-1">
                             {loadingState === 'loggedin' ? <>
                                 <Link href="/profile" className="py-5 px-3 text-gray-700 hover:text-gray-900">Profilis</Link>
-                                <Link href="/newpost" className="py-5 px-3 text-gray-700 hover:text-gray-900">Naujas</Link>
+                                {getRole(user) === 'nuomotojas' ? <Link href="/newpost" className="py-5 px-3 text-gray-700 hover:text-gray-900">Naujas</Link> : ""}
+                                {getRole(user) === 'nuomininkas' ? <Link href="/reservations" className="py-5 px-3 text-gray-700 hover:text-gray-900">Rezervacijos</Link> : ""}
                             </> : ''}
                         </div>
                     </div>

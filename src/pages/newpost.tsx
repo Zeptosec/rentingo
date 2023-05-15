@@ -2,6 +2,7 @@ import { IPost } from "@/components/Post";
 import PostForm from "@/components/PostForm";
 import Spinner from "@/components/Spinner";
 import { useUser } from "@/context/user";
+import { createPost } from "@/controllers/PostController";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -22,27 +23,11 @@ export default function NewPost() {
                 rentEnd: new Date(new Date().getTime() + Math.round(1000 * 60 * 60 * 24 * 10 * (Math.random() / 2 + 0.5))),
                 id: 0,
                 title: "",
-                user: user.profile
+                user: user.profile,
+                items: []
             })
         }
     }, [loadingState]);
-
-    async function CreatePost(newPost: IPost) {
-        let obj: any = { ...newPost };
-        delete obj.id;
-        const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user?.token}`
-            },
-            body: JSON.stringify(obj)
-        })
-        if (rs.ok) {
-            return { msg: "Pavyko", success: true };
-        }
-        return { msg: "Nepavyko", success: false };
-    }
 
     return (
         <div className="mx-auto w-1/2 mt-2">
@@ -53,7 +38,7 @@ export default function NewPost() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             {loadingState === 'loggedin' && post ?
-                <PostForm onSubmit={CreatePost} post={post} /> : <div className="flex justify-center"><Spinner /></div>}
+                <PostForm onSubmit={w => createPost(w, user)} post={post} /> : <div className="flex justify-center"><Spinner /></div>}
         </div>
     )
 }

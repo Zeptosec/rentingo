@@ -8,6 +8,7 @@ export default function Signup() {
     const [email, setEmail] = useState({ error: false, val: "" });
     const [password, setPassword] = useState({ error: false, val: "" });
     const [repeat, setRepeat] = useState({ error: false, val: "" });
+    const [rol, setRol] = useState(1);
     const [succ, setSucc] = useState({ val: 0, msg: "" });
     const router = useRouter();
     async function signup(w: FormEvent) {
@@ -37,7 +38,7 @@ export default function Signup() {
                         'Content-Type': 'application/json',
                         'accept': '*/*'
                     },
-                    body: JSON.stringify({ email: email.val, password: password.val, role: 1 })
+                    body: JSON.stringify({ email: email.val, password: password.val, role: rol })
                 })
                 if (rs.ok) {
                     setSucc({ val: 1, msg: "Sekmingai prisiregistruota!" });
@@ -86,6 +87,13 @@ export default function Signup() {
                                 <div className="relative">
                                     <input onChange={w => setRepeat(curr => ({ ...curr, val: w.target.value }))} value={repeat.val} autoComplete="off" id="password" name="password" type="password" className={`peer placeholder-transparent h-10 w-full border-b-2 ${repeat.error ? 'border-red-500' : 'border-gray-300'} text-gray-900 focus:outline-none focus:borer-rose-600`} placeholder="Pakartoti" />
                                     <label htmlFor="password2" className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Pakartoti</label>
+                                </div>
+                                <div className="relative">
+                                    <p>Role</p>
+                                    <select defaultValue={0} onChange={w=>setRol(parseInt(w.target.value))} name="rol" id="rol">
+                                        <option value="1">Nuomotojas</option>
+                                        <option value="2">Nuomininkas</option>
+                                    </select>
                                 </div>
                                 <div className="relative">
                                     <button className="bg-blue-500 text-white rounded-md px-2 py-1">Registruotis</button>

@@ -2,24 +2,18 @@ import Post, { IPost } from '@/components/Post'
 import Posts from '@/components/Posts';
 import Spinner from '@/components/Spinner';
 import { useUser } from '@/context/user';
+import { fetchPosts } from '@/controllers/PostController';
 import Head from 'next/head'
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react'
 
 export default function Home() {
-  const router = useRouter();
   const [posts, setPosts] = useState<IPost[]>([])
   const [isLoading, setIsLoading] = useState(true);
   const { loadingState, user } = useUser();
   useEffect(() => {
     async function getPosts() {
       try {
-        const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts`);
-        if (rs.ok) {
-          const json = await rs.json();
-
-          setPosts(json);
-        }
+        setPosts(await fetchPosts());
       } catch (rr) {
         console.log(rr);
       } finally {

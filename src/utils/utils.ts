@@ -5,6 +5,11 @@ export function ValidateEmail(mail: string) {
     return false
 }
 
+export function GetDays(from: Date, to: Date) {
+    const diff = to.getTime() - from.getTime();
+    return Math.round(diff / (1000 * 60 * 60 * 24));
+}
+
 export function DateToISO(date: Date) {
     let dt = null;
     if (typeof date === "string") {
