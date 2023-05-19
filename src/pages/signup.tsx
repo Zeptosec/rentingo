@@ -9,22 +9,29 @@ export default function Signup() {
     const [password, setPassword] = useState({ error: false, val: "" });
     const [repeat, setRepeat] = useState({ error: false, val: "" });
     const [rol, setRol] = useState(1);
-    const [succ, setSucc] = useState({ val: 0, msg: "" });
+    const [succ, setSucc] = useState<{ val: number, msg: string[] }>({ val: 0, msg: [] });
     const router = useRouter();
     async function signup(w: FormEvent) {
         w.preventDefault(); // prevent page from refreshing
         let errors = false;
+        setSucc({ val: 0, msg: [] });
+        setPassword(curr => ({ ...curr, error: false }));
+        setRepeat(curr => ({ ...curr, error: false }));
+        setEmail(curr => ({ ...curr, error: false }));
         if (!ValidateEmail(email.val)) {
             setEmail(curr => ({ ...curr, error: true }));
+            setSucc(w => ({ val: 2, msg: [...w.msg, "El. paštas blogo formato"] }));
             errors = true;
         }
         if (password.val.length < 8) {
             setPassword(curr => ({ ...curr, error: true }));
+            setSucc(w => ({ val: 2, msg: [...w.msg, "Slaptažodis per trumpas. 8 simboliai mažiausiai."] }));
             errors = true;
         }
         if (password.val !== repeat.val) {
             setPassword(curr => ({ ...curr, error: true }));
             setRepeat(curr => ({ ...curr, error: true }));
+            setSucc(w => ({ val: 2, msg: [...w.msg, "Slaptažodžiai nesutampa."] }));
             errors = true;
         }
         if (!errors) {
@@ -41,15 +48,15 @@ export default function Signup() {
                     body: JSON.stringify({ email: email.val, password: password.val, role: rol })
                 })
                 if (rs.ok) {
-                    setSucc({ val: 1, msg: "Sekmingai prisiregistruota!" });
+                    setSucc({ val: 1, msg: ["Sekmingai prisiregistruota!"] });
                     router.push('/login');
                 } else {
                     const json = await rs.json();
                     let msg = "Nepavyko prisiregistruoti";
-                    if(json.message && json.message.includes("exists")){
+                    if (json.message && json.message.includes("exists")) {
                         msg = "Toks el. paštas jau egzistuoja";
                     }
-                    setSucc({ val: 2, msg });
+                    setSucc({ val: 2, msg: [msg] });
                 }
             } catch (rr) {
                 console.log(rr);
@@ -90,7 +97,7 @@ export default function Signup() {
                                 </div>
                                 <div className="relative">
                                     <p>Role</p>
-                                    <select defaultValue={0} onChange={w=>setRol(parseInt(w.target.value))} name="rol" id="rol">
+                                    <select defaultValue={rol} onChange={w => setRol(parseInt(w.target.value))} name="rol" id="rol">
                                         <option value="1">Nuomotojas</option>
                                         <option value="2">Nuomininkas</option>
                                     </select>
@@ -100,8 +107,8 @@ export default function Signup() {
                                 </div>
                             </form>
                         </div>
-                        {succ.val === 1 ? <p className="text-green-600">{succ.msg}</p> : ""}
-                        {succ.val === 2 ? <p className="text-red-600">{succ.msg}</p> : ""}
+                        {succ.val === 1 ? succ.msg.map((w, ind) => <p key={`msg${ind}`} className="text-green-600">{w}</p>) : ""}
+                        {succ.val === 2 ? succ.msg.map((w, ind) => <p key={`err${ind}`} className="text-red-600">{w}</p>) : ""}
                     </div>
                 </div>
             </div>

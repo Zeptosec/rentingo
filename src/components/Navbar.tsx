@@ -36,7 +36,7 @@ export default function Navbar() {
                         <div className="hidden md:flex items-center space-x-1">
                             {loadingState === 'loggedin' ? <>
                                 <Link href="/profile" className="py-5 px-3 text-gray-700 hover:text-gray-900">Profilis</Link>
-                                {getRole(user) === 'administratorius' ? <Link href="/newpost" className="py-5 px-3 text-gray-700 hover:text-gray-900">Naujas</Link> : ""}
+                                {getRole(user) === 'nuomotojas' ? <Link href="/newpost" className="py-5 px-3 text-gray-700 hover:text-gray-900">Naujas</Link> : ""}
                                 {getRole(user) === 'nuomininkas' ? <Link href="/reservations" className="py-5 px-3 text-gray-700 hover:text-gray-900">Rezervacijos</Link> : ""}
                             </> : ''}
                         </div>

@@ -8,9 +8,9 @@ export type Role = 'nuomotojas' | 'nuomininkas' | 'administratorius';
 
 export function getRole(user: User | null) : Role{
     const rl: any = user?.profile.role;
-    if(rl === 0 || rl==="Owner"){
+    if(rl === 0){
         return "administratorius";
-    } else if(rl === 2 || rl === "Renter") {
+    } else if(rl === 2) {
         return "nuomininkas";
     } else {
         return "nuomotojas";

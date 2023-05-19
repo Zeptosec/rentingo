@@ -17,10 +17,14 @@ export default function Login() {
         let errors = false;
         if (!ValidateEmail(email.val)) {
             setEmail(curr => ({ ...curr, error: true }));
+            setSucc({val:2, msg: "El. paštas blogo formato"})
             errors = true;
         }
+        console.log(password.val.length);
         if (password.val.trim().length === 0) {
+            console.log(password.val.trim().length);
             setPassword(curr => ({ ...curr, error: true }));
+            setSucc({val:2, msg: "Slaptazodis neįvestas"})
             errors = true;
         }
 

@@ -2,7 +2,7 @@ import { LoadingState, User } from "@/context/user";
 import { Profile, getRole } from "@/pages/profile";
 import Link from "next/link"
 
-export const Categories = ['Bagažinės', "Įrankiai", "Valtys"];
+export const Categories = ['Bagažinės', "Valtys", "Priekabos", "Šaldikliai", "Palapinės"];
 export interface Item {
     id?: number,
     category: number,
@@ -55,7 +55,7 @@ export default function Post({ post, delPost, loadingState, user }: Props) {
                 <p className="text-gray-500">{post.description}</p>
             </div>
             <div className="absolute right-2 top-2 grid justify-end text-end">
-                {loadingState === 'loggedin' && (user?.profile.id === post.user.id) ? <>
+                {loadingState === 'loggedin' && (user?.profile.id === post.user.id || getRole(user) === 'administratorius') ? <>
                     <Link className="hover:underline hover:text-blue-400" href={`/editpost/${post.id}`}>Keisti</Link>
                     <button onClick={() => delPost(post)} className="hover:underline grid hover:text-blue-400">Trinti</button>
                 </> : ''}
