@@ -18,7 +18,7 @@ export function getRole(user: User | null) : Role{
 }
 
 export interface Profile {
-    role: Role,
+    role: number,
     name: string,
     surname: string,
     phone: string,
@@ -27,7 +27,7 @@ export interface Profile {
     street: string,
     houseNumber: string,
     postCode: string,
-    id: number
+    id?: number
 }
 
 export default function Profile() {

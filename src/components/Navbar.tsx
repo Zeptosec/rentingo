@@ -38,6 +38,7 @@ export default function Navbar() {
                                 <Link href="/profile" className="py-5 px-3 text-gray-700 hover:text-gray-900">Profilis</Link>
                                 {getRole(user) === 'nuomotojas' ? <Link href="/newpost" className="py-5 px-3 text-gray-700 hover:text-gray-900">Naujas</Link> : ""}
                                 {getRole(user) === 'nuomininkas' ? <Link href="/reservations" className="py-5 px-3 text-gray-700 hover:text-gray-900">Rezervacijos</Link> : ""}
+                                {getRole(user) === 'administratorius' ? <Link href={"/users"}>Vartotojai</Link> : ""}
                             </> : ''}
                         </div>
                     </div>
