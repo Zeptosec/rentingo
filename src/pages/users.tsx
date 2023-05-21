@@ -34,7 +34,7 @@ export default function UsersPage() {
         <div className="grid gap-2 justify-center">
             {loading ? <Spinner /> : <>
                 {users.length === 0 ? <p className="text-red-500">Nėra vartotojų</p> :
-                    users.map(curr => <UserCard admin={user} profile={curr} />)}
+                    users.map((curr, ind) => <UserCard key={`usr${ind}`} admin={user} profile={curr} />)}
             </>}
         </div>
     )
