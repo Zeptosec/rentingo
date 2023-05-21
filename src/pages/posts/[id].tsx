@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Head from "next/head";
 import { deliveryTypes } from "@/components/PostForm";
-import { fetchPost } from "@/controllers/PostController";
+import { fetchPost } from "@/controllers/AdvertController";
 import { useEffect, useState } from "react";
 import { DateToISO, GetDays } from "@/utils/utils";
 import { reserveItem } from "@/controllers/ReservationController";
@@ -68,7 +68,7 @@ export default function Post({ post }: Props) {
                     <input value={toDate} onChange={w => setToDate(w.target.value)} type="date" name="iki" id="iki" />
                     <p className="font-bold">Kaina: {pric} €</p>
                     {loadingState === 'loggedin' ? <>
-                        <button className="bg-blue-500 text-white rounded-sm" onClick={() => reserveItm()}>Nuomoti</button>
+                        <button className="bg-blue-500 text-white rounded-sm" onClick={() => reserveItm()}>Rezervuoti</button>
                         {resMsg.length > 0 ? <p>{resMsg}</p> : ""}
                     </> : "Norint nuomoti turite prisijungti"}
                 </div> : ""}

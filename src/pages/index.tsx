@@ -2,7 +2,7 @@ import Post, { IPost } from '@/components/Post'
 import Posts from '@/components/Posts';
 import Spinner from '@/components/Spinner';
 import { useUser } from '@/context/user';
-import { fetchPosts } from '@/controllers/PostController';
+import { fetchPosts } from '@/controllers/AdvertController';
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 

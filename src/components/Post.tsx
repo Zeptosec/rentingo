@@ -1,5 +1,5 @@
 import { LoadingState, User } from "@/context/user";
-import { Profile, getRole } from "@/pages/profile";
+import { Profile, getRole } from "@/pages/account";
 import Link from "next/link"
 
 export const Categories = ['Bagažinės', "Valtys", "Priekabos", "Šaldikliai", "Palapinės"];

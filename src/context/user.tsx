@@ -1,4 +1,4 @@
-import { Profile } from "@/pages/profile";
+import { Profile } from "@/pages/account";
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from "react";
 
 export type LoadingState = 'loading' | 'loggedin' | 'loggedout';

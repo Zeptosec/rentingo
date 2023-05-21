@@ -2,7 +2,7 @@ import { IPost } from "@/components/Post";
 import PostForm from "@/components/PostForm";
 import Spinner from "@/components/Spinner";
 import { useUser } from "@/context/user";
-import { createPost } from "@/controllers/PostController";
+import { createPost } from "@/controllers/AdvertController";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

@@ -1,3 +1,4 @@
+import { registerFunc } from "@/controllers/UserController";
 import { ValidateEmail } from "@/utils/utils";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -38,29 +39,7 @@ export default function Signup() {
             setEmail(curr => ({ ...curr, error: false }));
             setPassword(curr => ({ ...curr, error: false }));
             setRepeat(curr => ({ ...curr, error: false }));
-            try {
-                const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/api/auth/register`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accept': '*/*'
-                    },
-                    body: JSON.stringify({ email: email.val, password: password.val, role: rol })
-                })
-                if (rs.ok) {
-                    setSucc({ val: 1, msg: ["Sekmingai prisiregistruota!"] });
-                    router.push('/login');
-                } else {
-                    const json = await rs.json();
-                    let msg = "Nepavyko prisiregistruoti";
-                    if (json.message && json.message.includes("exists")) {
-                        msg = "Toks el. paštas jau egzistuoja";
-                    }
-                    setSucc({ val: 2, msg: [msg] });
-                }
-            } catch (rr) {
-                console.log(rr);
-            }
+            await registerFunc(email, password, rol, setSucc, router);
         }
     }
 

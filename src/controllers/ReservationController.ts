@@ -1,6 +1,6 @@
 import { Item } from "@/components/Post";
 import { User } from "@/context/user";
-import { Profile } from "@/pages/profile";
+import { Profile } from "@/pages/account";
 import { GetDays } from "@/utils/utils";
 
 export interface Reservation {

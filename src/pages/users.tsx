@@ -1,7 +1,7 @@
 import { useUser } from "@/context/user";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Profile, getRole } from "./profile";
+import { Profile, getRole } from "./account";
 import { getAllUsers } from "@/controllers/UserController";
 import Spinner from "@/components/Spinner";
 import UserCard from "@/components/UserCard";

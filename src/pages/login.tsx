@@ -1,4 +1,5 @@
 import { useUser } from "@/context/user";
+import { loginFunc } from "@/controllers/UserController";
 import { ValidateEmail } from "@/utils/utils";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -31,32 +32,7 @@ export default function Login() {
         if (!errors) {
             setEmail(curr => ({ ...curr, error: false }));
             setPassword(curr => ({ ...curr, error: false }));
-            try {
-                const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/api/auth/login`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accept': '*/*'
-                    },
-                    body: JSON.stringify({ email: email.val, password: password.val })
-                });
-                const json = await rs.json();
-                if (rs.ok) {
-                    const rs2 = await fetch(`${process.env.NEXT_PUBLIC_API}/api/auth/currentUser`, {
-                        headers: {
-                            'Authorization': `Bearer ${json.accessToken}`
-                        }
-                    })
-                    const user = await rs2.json();
-                    setUser({ token: json.accessToken, profile: user })
-                    router.push('/');
-                } else {
-                    setSucc({ val: 2, msg: "Nepavyko prisijungti" });
-                }
-            } catch (rr) {
-                console.log(rr);
-                setSucc({ val: 2, msg: "Nepavyko prisijungti" });
-            }
+            await loginFunc(email.val, password.val, setUser, router, setSucc);
         }
     }
 

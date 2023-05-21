@@ -6,7 +6,7 @@ import PostForm from "@/components/PostForm";
 import { useUser } from "@/context/user";
 import { useRouter } from "next/router";
 import Spinner from "@/components/Spinner";
-import { editPost, fetchPost } from "@/controllers/PostController";
+import { editPost, fetchPost } from "@/controllers/AdvertController";
 
 export default function Post() {
     const [post, setPost] = useState<IPost>()
