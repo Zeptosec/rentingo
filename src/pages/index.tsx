@@ -45,7 +45,7 @@ export default function Home() {
             <p>Kategorija</p>
             <select defaultValue={-1} onChange={w => refetchPosts(parseInt(w.target.value))} name="categ" id="categ">
               <option value={-1}>Visos</option>
-              {Categories.map((w, ind) => <option value={ind}>{w}</option>)}
+              {Categories.map((w, ind) => <option key={`${ind}catgry`} value={ind}>{w}</option>)}
             </select>
           </div>
           {posts.length > 0 ? <>
