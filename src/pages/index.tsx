@@ -1,4 +1,5 @@
 import Post, { IPost } from '@/components/Post'
+import { Categories } from '@/components/Post';
 import Posts from '@/components/Posts';
 import Spinner from '@/components/Spinner';
 import { useUser } from '@/context/user';
@@ -10,10 +11,15 @@ export default function Home() {
   const [posts, setPosts] = useState<IPost[]>([])
   const [isLoading, setIsLoading] = useState(true);
   const { loadingState, user } = useUser();
+
+  async function refetchPosts(category?: number) {
+    setPosts(await fetchPosts(category));
+  }
+
   useEffect(() => {
     async function getPosts() {
       try {
-        setPosts(await fetchPosts());
+        await refetchPosts();
       } catch (rr) {
         console.log(rr);
       } finally {
@@ -22,6 +28,7 @@ export default function Home() {
     }
     getPosts();
   }, [loadingState])
+
   return (
     <>
       <Head>
@@ -34,7 +41,16 @@ export default function Home() {
         <Spinner />
       </div> :
         <div className='grid'>
-          {posts.length > 0 ? <Posts loadingState={loadingState} user={user} posts={posts} setPosts={setPosts} /> : <p>Skelbimų nėra</p>}
+          <div className='grid my-2 gap-2 justify-center'>
+            <p>Kategorija</p>
+            <select defaultValue={-1} onChange={w => refetchPosts(parseInt(w.target.value))} name="categ" id="categ">
+              <option value={-1}>Visos</option>
+              {Categories.map((w, ind) => <option value={ind}>{w}</option>)}
+            </select>
+          </div>
+          {posts.length > 0 ? <>
+            <Posts loadingState={loadingState} user={user} posts={posts} setPosts={setPosts} />
+          </> : <p>Skelbimų nėra</p>}
         </div>}
     </>
   )

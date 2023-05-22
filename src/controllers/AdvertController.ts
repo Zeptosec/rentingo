@@ -7,8 +7,8 @@ export async function fetchPost(id: string) {
     return post;
 }
 
-export async function fetchPosts(){
-    const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts`);
+export async function fetchPosts(category?: number) {
+    const rs = await fetch(`${process.env.NEXT_PUBLIC_API}/api/adverts${category ? `?category=${category}` : ''}`);
     const posts = await rs.json();
     return posts;
 }
@@ -34,7 +34,7 @@ export async function editPost(newPost: IPost, user: User | null) {
 }
 
 export async function createPost(newPost: IPost, user: User | null) {
-    let obj: any = { 
+    let obj: any = {
         title: newPost.title,
         description: newPost.description,
         imageUrl: newPost.imageUrl,
@@ -54,7 +54,7 @@ export async function createPost(newPost: IPost, user: User | null) {
     const posts = await rs2.json();
     const insertedId = posts[posts.length - 1].id;
     if (rs.ok) {
-        for(let i = 0; i < newPost.items.length; i++){
+        for (let i = 0; i < newPost.items.length; i++) {
             const itmObj = {
                 name: newPost.items[i].name,
                 category: newPost.items[i].category,

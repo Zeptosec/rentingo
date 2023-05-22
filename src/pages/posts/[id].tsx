@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { DateToISO, GetDays } from "@/utils/utils";
 import { reserveItem } from "@/controllers/ReservationController";
 import { useUser } from "@/context/user";
+import { postContract } from "@/controllers/ContractController";
+import { getRole } from "../account";
 interface Props {
     post: IPost
 }
@@ -20,6 +22,9 @@ export default function Post({ post }: Props) {
     const [pric, setPric] = useState(0);
     const { loadingState, user } = useUser();
     const [resMsg, setResMsg] = useState("");
+
+    const [timeLength, setTimeLength] = useState("1");
+    const [contractSucc, setContractSucc] = useState({ msg: "", succ: true });
     useEffect(() => {
         try {
             const fDate = new Date(fromDate);
@@ -28,8 +33,10 @@ export default function Post({ post }: Props) {
                 setToDate(DateToISO(new Date(fDate.getTime() + 1000 * 60 * 60 * 24)).split("T")[0]);
                 return;
             }
-            const newPrice = GetDays(new Date(fromDate), new Date(toDate)) * parseFloat(post.items[selItemInd].price);
-            setPric(newPrice);
+            if (post.items.length > 0) {
+                const newPrice = GetDays(new Date(fromDate), new Date(toDate)) * parseFloat(post.items[selItemInd].price);
+                setPric(newPrice);
+            }
         } catch (rr) {
             console.log(rr);
         }
@@ -41,6 +48,24 @@ export default function Post({ post }: Props) {
             setResMsg(rs.msg);
         } else {
             setResMsg("Rezervuota sėkmingai");
+        }
+    }
+
+    async function rentItm() {
+        const rs = await postContract(timeLength, post.items[selItemInd], user);
+        setContractSucc(rs);
+    }
+
+    function getContractPrice(tm: string, item: Item) {
+        try {
+            const tmLen = parseInt(tm);
+            if (isNaN(tmLen) || tmLen < 1) {
+                setTimeLength("1");
+            }
+            const tprc = parseFloat(item.price);
+            return Math.round(tmLen * tprc * 100) / 100;
+        } catch (rr) {
+            return "Netinkamas laiko arba kainos formatas";
         }
     }
 
@@ -64,13 +89,32 @@ export default function Post({ post }: Props) {
                             {`${item.name}, kaina: ${item.price} €/diena`}
                         </option>)}
                     </select>
-                    <input value={fromDate} onChange={w => setFromDate(w.target.value)} type="date" name="nuo" id="nuo" />
-                    <input value={toDate} onChange={w => setToDate(w.target.value)} type="date" name="iki" id="iki" />
-                    <p className="font-bold">Kaina: {pric} €</p>
-                    {loadingState === 'loggedin' ? <>
-                        <button className="bg-blue-500 text-white rounded-sm" onClick={() => reserveItm()}>Rezervuoti</button>
-                        {resMsg.length > 0 ? <p>{resMsg}</p> : ""}
-                    </> : "Norint nuomoti turite prisijungti"}
+                    <div className="grid justify-center gap-2 p-4 border border-gray-600 rounded-xl">
+                        <p className="text-center">Rezervacija</p>
+                        <div className="flex gap-2">
+                            <p>Nuo:</p>
+                            <input className="flex-1 border border-gray-600 rounded-lg" value={fromDate} onChange={w => setFromDate(w.target.value)} type="date" name="nuo" id="nuo" />
+                        </div>
+                        <div className="flex gap-2">
+                            <p>Iki:</p>
+                            <input className="flex-1 border border-gray-600 rounded-lg" value={toDate} onChange={w => setToDate(w.target.value)} type="date" name="iki" id="iki" />
+                        </div>
+                        <p className="font-bold">Kaina: {pric} €</p>
+                        {loadingState === 'loggedin' && getRole(user) === 'nuomininkas' ? <>
+                            <button className="bg-blue-500 text-white rounded-lg" onClick={() => reserveItm()}>Rezervuoti</button>
+                            {resMsg.length > 0 ? <p>{resMsg}</p> : ""}
+                        </> : "Turite buti prisijungęs ir nuomininkas"}
+                    </div>
+                    <div className="grid justify-center gap-2 my-4 p-4 border border-gray-600 rounded-xl">
+                        <p className="text-center">Nuomojimas</p>
+                        <div className="flex gap-2 ">
+                            <p>Dienų kiekis: </p>
+                            <input className="flex-1 border border-gray-600 rounded-lg" type="number" onChange={w => setTimeLength(w.target.value)} value={timeLength} />
+                        </div>
+                        <p className="font-bold">Kaina: {getContractPrice(timeLength, post.items[selItemInd])} €</p>
+                        {loadingState === 'loggedin' && getRole(user) === 'nuomininkas' ? <button className="bg-blue-500 text-white rounded-lg" onClick={() => rentItm()}>Nuomoti</button> : <p>Turite buti prisijungęs ir nuomininkas</p>}
+                        {contractSucc.msg.length > 0 ? <p className={`${contractSucc.succ ? 'text-green-600' : 'text-red-500'} text-center`}>{contractSucc.msg}</p> : ""}
+                    </div>
                 </div> : ""}
             </div>
         </>
@@ -89,7 +133,7 @@ export async function getStaticProps({ params }: any) {
         // Next.js will attempt to re-generate the page:
         // - When a request comes in
         // - At most once every 60 seconds
-        revalidate: 60, // In seconds
+        revalidate: 10, // In seconds
     }
 }
 
